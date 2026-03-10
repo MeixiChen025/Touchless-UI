@@ -1,0 +1,10 @@
+.env
+processed_labels/
+__pycache__/
+gesture_final/
+gesture_env/
+data_processing_sample.png
+*.csv
+*.pth
+*.pyc
+saved_models/
