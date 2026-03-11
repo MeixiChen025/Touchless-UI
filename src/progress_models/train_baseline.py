@@ -47,7 +47,8 @@ def main():
     optimizer = optim.Adam(model.parameters(), lr=0.001) 
     
     num_epochs = 5
-    
+    best_val_acc = 0.0
+
     for epoch in range(num_epochs):
         model.train() 
         running_loss = 0.0
@@ -79,7 +80,11 @@ def main():
                 correct += (predicted == labels).sum().item()
                 
         val_accuracy = 100 * correct / total
-        print(f" Epoch [{epoch+1}/{num_epochs}] end | average train loss: {running_loss/len(train_loader):.4f} | validation set accuracy: {val_accuracy:.2f}%")
+        print(f"Epoch [{epoch+1}/{num_epochs}] end | average train loss: {running_loss/len(train_loader):.4f} | validation set accuracy: {val_accuracy:.2f}%")
+
+        if val_accuracy > best_val_acc:
+            best_val_acc = val_accuracy
+            torch.save(model.state_dict(), 'baseline_model.pth')
 
 if __name__ == "__main__":
     main()
