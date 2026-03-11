@@ -73,7 +73,6 @@ def plot_prediction():
         
     plt.gca().invert_yaxis()
     plt.savefig('qualitative_result.png', dpi=300, bbox_inches='tight')
-    print(f"true label is '{true_label_name}'Diagram save to qualitative_result.png")
     plt.show()
 
 if __name__ == "__main__":

@@ -37,7 +37,7 @@ def run_baseline_evaluation():
     val_csv = "processed_labels/filtered_val.csv"
     val_dataset = JesterMiddleFrameDataset(csv_file=val_csv, root_dir=DATASET_PATH)
 
-    sample_idx = 10  
+    sample_idx = 42  
     image_tensor, true_label_idx = val_dataset[sample_idx]
     
     inv_label_dict = {v: k for k, v in LABEL_DICT.items()}
@@ -49,6 +49,7 @@ def run_baseline_evaluation():
         probabilities = torch.nn.functional.softmax(raw_scores[0], dim=0).cpu().numpy() * 100
 
     labels = list(LABEL_DICT.keys())
+
     plt.figure(figsize=(10, 6))
     bars = plt.barh(labels, probabilities, color='gray')
     
@@ -56,12 +57,18 @@ def run_baseline_evaluation():
     
     plt.xlabel('Probability (%)')
     plt.title(f'Baseline Model Prediction Confidence (Single Frame)\nTrue Label: {true_label_name}')
-    plt.xlim(0, 100)
-    plt.grid(axis='x', linestyle='--', alpha=0.7)
+    plt.xlim(0, 100) 
+    
+    for bar in bars:
+        width = bar.get_width()
+        plt.text(width + 1, bar.get_y() + bar.get_height()/2, f'{width:.1f}%', va='center')
+
+    plt.gca().invert_yaxis()
     plt.savefig('baseline_qualitative_result.png', dpi=300, bbox_inches='tight')
     plt.show()
+
+   
     
-    print(f"Qualitative result saved as baseline_qualitative_result.png")
     for i, label in enumerate(labels):
         print(f"{label}: {probabilities[i]:.2f}%")
 
