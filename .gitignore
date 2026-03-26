@@ -8,3 +8,9 @@ data_processing_sample.png
 *.pth
 *.pyc
 saved_models/
+
+Custom_Dataset/
+Custom_Frames/
+
+.DS_Store
+Thumbs.db
