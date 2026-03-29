@@ -2,6 +2,20 @@ import cv2
 import os
 import csv
 
+OFFICIAL_LABELS = {
+    "swipe_down": "Swiping Down",
+    "swiping_down": "Swiping Down",
+    "swipe_up": "Swiping Up",
+    "swiping_up": "Swiping Up",
+    "swipe_left": "Swiping Left",
+    "swiping_left": "Swiping Left",
+    "swipe_right": "Swiping Right",
+    "swiping_right": "Swiping Right",
+    "thumb_down": "Thumb Down",
+    "thumb_up": "Thumb Up",
+    "stop_sign": "Stop Sign"
+}
+
 def process_custom_videos():
     input_root = "Custom_Dataset"       
     output_root = "Custom_Frames"        
@@ -18,7 +32,12 @@ def process_custom_videos():
         if not os.path.isdir(gesture_dir):
             continue
             
-        
+        normalized_name = gesture_name.lower().replace(" ", "_")
+        formatted_label = OFFICIAL_LABELS.get(normalized_name)
+
+        if formatted_label is None:
+            continue
+            
         for video_file in os.listdir(gesture_dir):
             if not (video_file.endswith('.mp4') or video_file.endswith('.mov')):
                 continue
@@ -48,9 +67,6 @@ def process_custom_videos():
                 os.rmdir(video_out_dir)
                 continue 
             
-            formatted_label = gesture_name.replace("_", " ").title() 
-
-            
             csv_data.append([video_id, formatted_label])
             video_counter += 1
 
@@ -59,9 +75,7 @@ def process_custom_videos():
         for row in csv_data:
             writer.writerow(row)
             
-    print(f"\n Processed {video_counter-1} videos.")
-    print(f"Frames saved in: {output_root}/")
-    print(f"Labels saved in: {csv_file_path}")
+    print(f"CSV files saved to: {csv_file_path}")
 
 if __name__ == "__main__":
     process_custom_videos()

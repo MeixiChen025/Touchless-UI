@@ -61,9 +61,10 @@ def evaluate_on_custom_data():
     validation_dir = os.path.join(custom_root, "Validation")
     if not os.path.exists(validation_dir):
         os.makedirs(validation_dir)
-        for item in os.listdir(custom_root):
-            if item.startswith("custom_") and os.path.isdir(os.path.join(custom_root, item)):
-                shutil.move(os.path.join(custom_root, item), os.path.join(validation_dir, item))
+        
+    for item in os.listdir(custom_root):
+        if item.startswith("custom_") and os.path.isdir(os.path.join(custom_root, item)):
+            shutil.move(os.path.join(custom_root, item), os.path.join(validation_dir, item))
         
     custom_dataset = Jester3DDataset(csv_file=custom_csv, root_dir=custom_root, num_frames=8)
     custom_loader = DataLoader(custom_dataset, batch_size=4, shuffle=False)
